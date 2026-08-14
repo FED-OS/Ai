@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resizer & JPEG Converter – Chrome Asset Hub</title>
+    <meta name="description" content="Resize icons, flatten alpha channels, and generate Chrome Web Store compliant assets in one click." />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="ChromeHub – Instant Resizer & JPEG Converter" />
+    <meta property="og:description" content="Drop your artwork, get perfectly sized icons and store visuals — or a flattened JPEG." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/your-repo/resizer.html" />
+    <meta property="og:image" content="https://yourusername.github.io/your-repo/og-image-tool.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- JSZip for client‑side ZIP generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        /* ============================================================
+           ULTRA-SHARP SOLID DARK THEME (same as index / stacks)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-surface: #141414;
+            --bg-elevated: #1c1c1c;
+            --border-subtle: #2a2a2a;
+            --border-medium: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --radius: 12px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 32px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s ease;
+        }
+        nav a:hover {
+            color: var(--text-primary);
+        }
+        nav a.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 6px 18px !important;
+            border-radius: 40px !important;
+            border: none !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-hover) !important;
+        }
+
+        /* ---- Buttons ---- */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #2a2a2a;
+            border-color: var(--border-medium);
+        }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-success {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+            border-color: #16a34a;
+        }
+        .btn-warning {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: #000;
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            border-color: #d97706;
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(0.5);
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* ---- Cards ---- */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+        }
+
+        /* ---- Grids ---- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        /* ---- Sections ---- */
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 32px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---- Drop Zone ---- */
+        .drop-zone {
+            background: var(--bg-surface);
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--radius);
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: var(--accent);
+            background: var(--bg-elevated);
+        }
+        .drop-zone .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .drop-zone h3 {
+            color: #fff;
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        .drop-zone p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .drop-zone .file-name {
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 8px;
+            display: none;
+        }
+        .drop-zone.has-file .file-name {
+            display: block;
+        }
+        .drop-zone.has-file .icon {
+            font-size: 2.5rem;
+        }
+        .drop-zone input[type="file"] {
+            display: none;
+        }
+
+        /* ---- Preview thumbnail ---- */
+        .preview-container {
+            margin-top: 16px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .preview-container.show {
+            display: flex;
+        }
+        .preview-container img {
+            max-height: 120px;
+            max-width: 200px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            object-fit: contain;
+        }
+        .preview-container .info {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .preview-container .info strong {
+            color: #fff;
+        }
+
+        /* ---- Pipeline Selector ---- */
+        .pipeline-selector {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .pipeline-selector label {
+            font-weight: 600;
+            color: #fff;
+        }
+        .pipeline-selector select {
+            background: var(--bg-app);
+            border: 1px solid var(--border-subtle);
+            padding: 10px 18px;
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            min-width: 280px;
+            cursor: pointer;
+        }
+        .pipeline-selector select:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* ---- Feature Badges ---- */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0 32px;
+        }
+        .badge-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge-item .label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .badge-item .label strong {
+            color: #fff;
+            display: block;
+            font-size: 1rem;
+        }
+        .badge-tag {
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .badge-tag.accent {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow);
+        }
+        .badge-tag.success {
+            border-color: var(--success);
+            color: var(--success);
+            background: rgba(34, 197, 94, 0.08);
+        }
+        .badge-tag.warning {
+            border-color: var(--warning);
+            color: var(--warning);
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        /* ---- Usage Counter ---- */
+        .usage-counter {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 12px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
+        .usage-counter .count {
+            color: #fff;
+            font-weight: 700;
+        }
+        .usage-counter .count.limit-hit {
+            color: #dc2626;
+        }
+
+        /* ---- FAQ (tool-specific) ---- */
+        .faq-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .faq-item summary {
+            padding: 18px 24px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: "+";
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+        .faq-item[open] summary::after {
+            content: "−";
+        }
+        .faq-item .faq-answer {
+            padding: 0 24px 20px 24px;
+            color: var(--text-secondary);
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 300px;
+            margin-top: 8px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-links div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .footer-links div span {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .footer-links a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+                height: auto;
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            section {
+                padding: 40px 0;
+            }
+            .pipeline-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .pipeline-selector select {
+                min-width: unset;
+            }
+            .badge-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer-grid {
+                flex-direction: column;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .badge-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    NAVIGATION
+    ============================================================ -->
+    <nav>
+        <div class="logo">Chrome<span>Hub</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="stacks.html">Icon Library</a>
+            <a href="resizer.html" class="active">Resizer</a>
+            <a href="extractor.html">Extractor</a>
+            <a href="index.html#pricing" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section style="padding-top: 60px; padding-bottom: 20px; border-bottom: none;">
+        <div class="container text-center">
+            <h1 style="font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #ffffff 30%, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Instant Resizer &amp; JPEG Converter
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 650px; margin: 12px auto 0;">
+                Drop any image — get perfectly sized icons, store‑ready promo tiles, or a flattened JPEG. All processing happens in your browser.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TOOL AREA
+    ============================================================ -->
+    <section style="padding-top: 20px; border-bottom: none;">
+        <div class="container">
+
+            <!-- Usage Counter -->
+            <div class="usage-counter" id="usageCounter">
+                <span>📊 Today's usage:</span>
+                <span class="count" id="usageCount">0</span>
+                <span>/ 3 free conversions</span>
+                <span style="margin-left: 8px; font-size: 0.8rem; color: var(--text-tertiary);">(upgrade for unlimited)</span>
+            </div>
+
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <span class="icon">📥</span>
+                <h3>Drop your master artwork here</h3>
+                <p>Supports PNG, JPG, WebP, or Figma exports (max 25MB)</p>
+                <div class="file-name" id="fileName">✅ Loaded: <span></span></div>
+                <input type="file" id="fileInput" accept="image/*" />
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-container" id="previewContainer">
+                <img id="previewImage" src="#" alt="Preview" />
+                <div class="info">
+                    <strong id="previewName">image.png</strong><br />
+                    <span id="previewDimensions">0 × 0 px</span>
+                </div>
+            </div>
+
+            <!-- Pipeline Selector -->
+            <div class="pipeline-selector">
+                <label for="pipelineMode">⚡ Select output pipeline:</label>
+                <select id="pipelineMode">
+                    <option value="zip">📦 Full Store Suite (.ZIP with PNGs)</option>
+                    <option value="jpeg">🖼️ Flatten to Compliant JPEG (.JPG)</option>
+                </select>
+            </div>
+
+            <!-- Feature Badges -->
+            <div class="badge-grid">
+                <div class="badge-item">
+                    <div class="label"><strong>Icons 16–128px</strong>Transparent PNGs</div>
+                    <span class="badge-tag">PNG</span>
+                </div>
+                <div class="badge-item">
+                    <div class="label"><strong>Store Screenshots</strong>1280×800, 440×280, 1400×560</div>
+                    <span class="badge-tag warning">No Alpha</span>
+                </div>
+                <div class="badge-item">
+                    <div class="label"><strong>JPEG Converter</strong>Flattens transparency over white</div>
+                    <span class="badge-tag success">RGB Safe</span>
+                </div>
+                <div class="badge-item">
+                    <div class="label"><strong>Free Tier</strong>3 operations / day</div>
+                    <span class="badge-tag accent">Freemium</span>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button class="btn btn-primary btn-block" id="buildBtn" disabled style="padding: 16px; font-size: 1.1rem;">
+                ⚡ Build &amp; Export Assets
+            </button>
+
+            <!-- Upgrade prompt (hidden by default, shown when limit hit) -->
+            <div id="upgradePrompt" style="display: none; margin-top: 20px; background: rgba(220, 38, 38, 0.08); border: 1px solid #dc2626; border-radius: var(--radius); padding: 20px 24px; text-align: center;">
+                <p style="color: #dc2626; font-weight: 600;">⚠️ You've reached your daily free limit of 3 conversions.</p>
+                <p style="color: var(--text-secondary); margin: 8px 0 16px;">Upgrade to <strong>Premium Pro</strong> for unlimited access and all icon packs.</p>
+                <a href="index.html#pricing" class="btn btn-primary">View Pricing →</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================
+    HOW IT WORKS (brief)
+    ============================================================ -->
+    <section style="padding: 40px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="container text-center">
+            <h2 class="section-title">How it works</h2>
+            <div class="grid-3" style="margin-top: 16px;">
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">📤</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">1. Upload</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Drag &amp; drop your master artwork into the drop zone.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">⚙️</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">2. Choose output</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Select ZIP (icons + promo tiles) or JPEG (flattened).</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">⬇️</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">3. Download</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Get your assets instantly — no servers, no waiting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FAQ (Tool-specific)
+    ============================================================ -->
+    <section id="faq" style="padding: 60px 0;">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Frequently asked questions</h2>
+                <p class="section-subtitle mx-auto">Got questions about the resizer tool? We've got answers.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <details class="faq-item">
+                    <summary>What image formats can I upload?</summary>
+                    <div class="faq-answer">We accept PNG, JPEG, WebP, and most common image formats. If you're exporting from Figma, use PNG or JPG.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Are my images uploaded to a server?</summary>
+                    <div class="faq-answer">No. All processing happens entirely in your browser. Your images never leave your device — privacy by design.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What does the ZIP contain?</summary>
+                    <div class="faq-answer">The ZIP includes: `icons/` with 16, 32, 48, 128px PNGs; `store-visuals/` with 1280×800, 440×280, and 1400×560 promo tiles — all flattened to 24‑bit RGB to pass Chrome Store validation.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Why would I use the JPEG pipeline?</summary>
+                    <div class="faq-answer">The Chrome Web Store rejects promo images with alpha (transparency). The JPEG pipeline flattens your image over a white background, producing a 24‑bit compliant file that passes validation every time.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What happens after 3 free uses?</summary>
+                    <div class="faq-answer">You'll see a prompt to upgrade to Premium Pro ($29 lifetime). Upgrading removes all limits and unlocks the full icon library.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FINAL CTA
+    ============================================================ -->
+    <section style="border-bottom: none; padding-bottom: 60px;">
+        <div class="container text-center">
+            <div style="background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 40px 32px; max-width: 700px; margin: 0 auto;">
+                <h2 style="color: #fff; font-size: 1.8rem; margin-bottom: 8px;">Need unlimited conversions?</h2>
+                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 24px;">
+                    Upgrade to Premium Pro and get unlimited resizes, the full icon library, and commercial rights.
+                </p>
+                <a href="index.html#pricing" class="btn btn-success" style="font-size: 1.1rem; padding: 14px 40px;">See Pricing →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="font-size: 1.2rem;">Chrome<span>Hub</span></div>
+                    <p>The all‑in‑one toolkit for Chrome extension developers.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <span>Product</span>
+                        <a href="index.html#features">Features</a>
+                        <a href="index.html#pricing">Pricing</a>
+                        <a href="resizer.html">Resizer</a>
+                        <a href="extractor.html">Extractor</a>
+                    </div>
+                    <div>
+                        <span>Support</span>
+                        <a href="#faq">FAQ</a>
+                        <a href="license.html">Licensing</a>
+                        <a href="mailto:hello@example.com">Contact</a>
+                    </div>
+                    <div>
+                        <span>Social</span>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 ChromeHub. All rights reserved.</span>
+                <span>Made with ☕ by an indie developer</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT — All the logic
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- DOM refs ----
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const buildBtn = document.getElementById('buildBtn');
+            const pipelineMode = document.getElementById('pipelineMode');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const previewName = document.getElementById('previewName');
+            const previewDimensions = document.getElementById('previewDimensions');
+            const fileName = document.getElementById('fileName');
+            const usageCount = document.getElementById('usageCount');
+            const upgradePrompt = document.getElementById('upgradePrompt');
+
+            let currentFile = null;
+            let currentImageData = null; // stores the loaded Image object
+
+            // ---- Usage tracking ----
+            function getToday() {
+                return new Date().toDateString();
+            }
+
+            function getUsage() {
+                const today = getToday();
+                const storedDate = localStorage.getItem('resizer_date');
+                const storedCount = parseInt(localStorage.getItem('resizer_count') || '0', 10);
+                if (storedDate !== today) {
+                    // Reset for new day
+                    localStorage.setItem('resizer_date', today);
+                    localStorage.setItem('resizer_count', '0');
+                    return 0;
+                }
+                return storedCount;
+            }
+
+            function incrementUsage() {
+                const today = getToday();
+                const current = getUsage();
+                const newCount = current + 1;
+                localStorage.setItem('resizer_date', today);
+                localStorage.setItem('resizer_count', String(newCount));
+                return newCount;
+            }
+
+            function updateUsageUI() {
+                const count = getUsage();
+                usageCount.textContent = count;
+                if (count >= 3) {
+                    usageCount.classList.add('limit-hit');
+                    upgradePrompt.style.display = 'block';
+                    buildBtn.disabled = true;
+                } else {
+                    usageCount.classList.remove('limit-hit');
+                    upgradePrompt.style.display = 'none';
+                    if (currentFile) buildBtn.disabled = false;
+                }
+            }
+
+            // ---- Drop zone events ----
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            // ---- File handler ----
+            function handleFile(file) {
+                if (!file || !file.type.startsWith('image/')) {
+                    alert('Please drop a valid image file (PNG, JPG, WebP).');
+                    return;
+                }
+
+                // Check size (max 25MB)
+                if (file.size > 25 * 1024 * 1024) {
+                    alert('File is too large. Maximum size is 25MB.');
+                    return;
+                }
+
+                currentFile = file;
+
+                // Update UI
+                dropZone.classList.add('has-file');
+                document.querySelector('.drop-zone .icon').textContent = '✅';
+                document.querySelector('.drop-zone h3').textContent = 'File loaded';
+                document.querySelector('.drop-zone p').textContent = 'Ready to process';
+                fileName.querySelector('span').textContent = file.name;
+                fileName.style.display = 'block';
+
+                // Preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        currentImageData = img;
+                        previewImage.src = e.target.result;
+                        previewName.textContent = file.name;
+                        previewDimensions.textContent = `${img.width} × ${img.height} px`;
+                        previewContainer.classList.add('show');
+                        // Re-check limit + enable button
+                        updateUsageUI();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // If limit already hit, button stays disabled
+                updateUsageUI();
+            }
+
+            // ---- Build button ----
+            buildBtn.addEventListener('click', function() {
+                const usage = getUsage();
+                if (usage >= 3) {
+                    alert('⚠️ You\'ve reached your daily free limit of 3 conversions. Please upgrade to Premium Pro for unlimited access.');
+                    upgradePrompt.style.display = 'block';
+                    buildBtn.disabled = true;
+                    return;
+                }
+
+                if (!currentFile || !currentImageData) {
+                    alert('Please upload an image first.');
+                    return;
+                }
+
+                const mode = pipelineMode.value;
+                buildBtn.textContent = '⏳ Processing...';
+                buildBtn.disabled = true;
+
+                // Use a small timeout to let UI update
+                setTimeout(() => {
+                    try {
+                        if (mode === 'zip') {
+                            generateZip(currentImageData, function() {
+                                // Increment usage after successful generation
+                                incrementUsage();
+                                updateUsageUI();
+                                buildBtn.textContent = '⚡ Build & Export Assets';
+                                buildBtn.disabled = false;
+                                // Re-check limit
+                                if (getUsage() >= 3) {
+                                    buildBtn.disabled = true;
+                                }
+                            });
+                        } else {
+                            generateJPEG(currentImageData, function() {
+                                incrementUsage();
+                                updateUsageUI();
+                                buildBtn.textContent = '⚡ Build & Export Assets';
+                                buildBtn.disabled = false;
+                                if (getUsage() >= 3) {
+                                    buildBtn.disabled = true;
+                                }
+                            });
+                        }
+                    } catch (err) {
+                        alert('An error occurred: ' + err.message);
+                        buildBtn.textContent = '⚡ Build & Export Assets';
+                        buildBtn.disabled = false;
+                    }
+                }, 100);
+            });
+
+            // ---- ZIP generator ----
+            function generateZip(img, callback) {
+                const zip = new JSZip();
+                const specs = [
+                    [16, 16, 'icons', 'icon16.png', false],
+                    [32, 32, 'icons', 'icon32.png', false],
+                    [48, 48, 'icons', 'icon48.png', false],
+                    [128, 128, 'icons', 'icon128.png', false],
+                    [1280, 800, 'store-visuals', 'screenshot.png', true],
+                    [440, 280, 'store-visuals', 'small-promo-tile.png', true],
+                    [1400, 560, 'store-visuals', 'marquee-banner.png', true]
+                ];
+
+                let completed = 0;
+
+                specs.forEach(([w, h, folder, name, flatten]) => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+
+                    if (flatten) {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, w, h);
+                    }
+
+                    // Maintain aspect ratio: cover mode (crop to fill)
+                    const scale = Math.max(w / img.width, h / img.height);
+                    const x = (w / 2) - (img.width / 2) * scale;
+                    const y = (h / 2) - (img.height / 2) * scale;
+                    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+                    canvas.toBlob((blob) => {
+                        zip.folder(folder).file(name, blob);
+                        completed++;
+                        if (completed === specs.length) {
+                            zip.generateAsync({ type: 'blob' }).then((content) => {
+                                const a = document.createElement('a');
+                                a.href = URL.createObjectURL(content);
+                                a.download = 'chrome-store-assets-pack.zip';
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(a.href);
+                                callback();
+                            });
+                        }
+                    }, 'image/png');
+                });
+            }
+
+            // ---- JPEG generator ----
+            function generateJPEG(img, callback) {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+
+                // Flatten over white
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+
+                canvas.toBlob((blob) => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'flattened-compliant.jpg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(a.href);
+                    callback();
+                }, 'image/jpeg', 0.95);
+            }
+
+            // ---- Init ----
+            updateUsageUI();
+
+            // Also update usage periodically (in case user switches tabs)
+            setInterval(updateUsageUI, 30000);
+
+            // Expose for debugging if needed
+            window.resizer = { getUsage, incrementUsage, updateUsageUI };
+
+        })();
+    </script>
+
+</body>
+</html>
