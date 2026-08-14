@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Hub – ChromeHub Dashboard</title>
+    <meta name="description" content="Access your premium icon packs, API keys, and account settings. Everything you need in one place." />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="ChromeHub – Premium Dashboard" />
+    <meta property="og:description" content="Manage your premium subscription, download icon packs, and access your API key." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/your-repo/dashboard.html" />
+    <meta property="og:image" content="https://yourusername.github.io/your-repo/og-image-dashboard.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+        /* ============================================================
+           ULTRA-SHARP SOLID DARK THEME (same as all pages)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-surface: #141414;
+            --bg-elevated: #1c1c1c;
+            --border-subtle: #2a2a2a;
+            --border-medium: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --radius: 12px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 32px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s ease;
+        }
+        nav a:hover {
+            color: var(--text-primary);
+        }
+        nav a.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 6px 18px !important;
+            border-radius: 40px !important;
+            border: none !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-hover) !important;
+        }
+
+        /* ---- Buttons ---- */
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #2a2a2a;
+            border-color: var(--border-medium);
+        }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-success {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+            border-color: #16a34a;
+        }
+        .btn-danger {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            border-color: #b91c1c;
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--border-medium);
+        }
+        .btn-outline:hover {
+            background: var(--bg-elevated);
+        }
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.8rem;
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* ---- Cards ---- */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+        }
+
+        /* ---- Grids ---- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        /* ---- Sections ---- */
+        section {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---- Dashboard Header ---- */
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 20px 0 8px;
+        }
+        .dash-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .dash-header .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .dash-header .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ---- Stat Cards ---- */
+        .stat-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        /* ---- API Key Display ---- */
+        .api-key-display {
+            background: var(--bg-app);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 12px 0 16px;
+        }
+        .api-key-display code {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            word-break: break-all;
+            flex: 1;
+        }
+        .api-key-display .actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* ---- Pack Download List ---- */
+        .pack-list {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 16px;
+        }
+        .pack-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .pack-list li:last-child {
+            border-bottom: none;
+        }
+        .pack-list .pack-name {
+            color: #fff;
+            font-weight: 500;
+        }
+        .pack-list .pack-size {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            margin-left: 12px;
+        }
+        .pack-list .pack-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* ---- Form inputs ---- */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-app);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* ---- Tabs (simple) ---- */
+        .tab-bar {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius);
+            padding: 4px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .tab-btn:hover {
+            color: #fff;
+        }
+        .tab-btn.active {
+            background: var(--bg-surface);
+            color: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 300px;
+            margin-top: 8px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-links div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .footer-links div span {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .footer-links a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+                height: auto;
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            section {
+                padding: 30px 0;
+            }
+            .dash-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .api-key-display {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .api-key-display .actions {
+                justify-content: flex-end;
+            }
+            .pack-list li {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .pack-list .pack-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .footer-grid {
+                flex-direction: column;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .tab-bar {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    NAVIGATION
+    ============================================================ -->
+    <nav>
+        <div class="logo">Chrome<span>Hub</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="stacks.html">Icon Library</a>
+            <a href="resizer.html">Resizer</a>
+            <a href="extractor.html">Extractor</a>
+            <a href="dashboard.html" class="active">⭐ Premium Hub</a>
+            <a href="index.html#pricing" class="nav-cta">Upgrade</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+    DASHBOARD HEADER
+    ============================================================ -->
+    <section style="padding-top: 30px; padding-bottom: 10px; border-bottom: none;">
+        <div class="container">
+            <div class="dash-header">
+                <div>
+                    <h1>⭐ Premium Hub</h1>
+                    <p style="color: var(--text-secondary);">Manage your subscription, download packs, and access your API key.</p>
+                </div>
+                <div class="status-badge">
+                    <span class="dot"></span>
+                    Active – Lifetime
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    STATS ROW
+    ============================================================ -->
+    <section style="padding-top: 0; padding-bottom: 20px; border-bottom: none;">
+        <div class="container">
+            <div class="grid-3">
+                <div class="stat-card">
+                    <div class="number" id="statPacks">6</div>
+                    <div class="label">Total Packs Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="statResizes">∞</div>
+                    <div class="label">Unlimited Resizes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="statExtractions">∞</div>
+                    <div class="label">Unlimited Extractions</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TABS: Downloads / API / Account
+    ============================================================ -->
+    <section style="padding-top: 10px; border-bottom: none;">
+        <div class="container">
+
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <button class="tab-btn active" data-tab="downloads">📦 Downloads</button>
+                <button class="tab-btn" data-tab="api">🔑 API Access</button>
+                <button class="tab-btn" data-tab="account">👤 Account</button>
+            </div>
+
+            <!-- ==========================================================
+            TAB 1: DOWNLOADS
+            ========================================================== -->
+            <div class="tab-content active" id="tab-downloads">
+                <div class="card">
+                    <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 4px;">All Premium Icon Packs</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                        Download any pack at any time. Each ZIP includes PNGs (16–128px), .ico containers, and manifest snippets.
+                    </p>
+
+                    <ul class="pack-list">
+                        <li>
+                            <span>
+                                <span class="pack-name">🤖 AI Sidebar &amp; Automation</span>
+                                <span class="pack-size">50 icons</span>
+                            </span>
+                            <span class="pack-actions">
+                                <a href="#" class="btn btn-primary btn-sm" onclick="simulateDownload('ai-pack.zip')">⬇️ Download</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <span class="pack-name">📊 B2B SaaS &amp; Fintech Matrix</span>
+                                <span class="pack-size">65 icons</span>
+                            </span>
+                            <span class="pack-actions">
+                                <a href="#" class="btn btn-primary btn-sm" onclick="simulateDownload('saas-pack.zip')">⬇️ Download</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <span class="pack-name">📦 E‑Commerce &amp; Coupon Glyphs</span>
+                                <span class="pack-size">40 icons</span>
+                            </span>
+                            <span class="pack-actions">
+                                <a href="#" class="btn btn-primary btn-sm" onclick="simulateDownload('ecom-pack.zip')">⬇️ Download</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <span class="pack-name">🎨 Minimalist Line Art Pack</span>
+                                <span class="pack-size">35 icons</span>
+                            </span>
+                            <span class="pack-actions">
+                                <a href="#" class="btn btn-primary btn-sm" onclick="simulateDownload('minimal-pack.zip')">⬇️ Download</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <span class="pack-name">🌈 Gradient &amp; Glassmorphism Set</span>
+                                <span class="pack-size">28 icons</span>
+                            </span>
+                            <span class="pack-actions">
+                                <a href="#" class="btn btn-primary btn-sm" onclick="simulateDownload('glass-pack.zip')">⬇️ Download</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <span class="pack-name">⚡ Developer Tools &amp; Terminal Pack</span>
+                                <span class="pack-size">42 icons</span>
+                            </span>
+                            <span class="pack-actions">
+                                <a href="#" class="btn btn-primary btn-sm" onclick="simulateDownload('devtools-pack.zip')">⬇️ Download</a>
+                            </span>
+                        </li>
+                    </ul>
+
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">
+                            📦 <strong>Total:</strong> 260 icons across 6 packs
+                        </span>
+                        <a href="#" class="btn btn-success btn-sm" onclick="simulateDownload('all-packs-bundle.zip')">⬇️ Download All Packs (ZIP)</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            TAB 2: API ACCESS
+            ========================================================== -->
+            <div class="tab-content" id="tab-api">
+                <div class="card">
+                    <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 4px;">🔑 API Access</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                        Use this API key to integrate our tools into your own scripts and workflows.
+                    </p>
+
+                    <div class="api-key-display">
+                        <code id="apiKey">sk_live_8f9a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0</code>
+                        <div class="actions">
+                            <button class="btn btn-outline btn-sm" onclick="copyApiKey()">📋 Copy</button>
+                            <button class="btn btn-outline btn-sm" onclick="regenerateApiKey()">🔄 Regenerate</button>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-elevated); border-radius: var(--radius); padding: 16px; margin: 12px 0;">
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">
+                            <strong>📘 Example usage (cURL):</strong>
+                        </p>
+                        <code style="display: block; background: var(--bg-app); padding: 12px 16px; border-radius: 8px; font-size: 0.8rem; color: var(--text-secondary); word-break: break-all; border: 1px solid var(--border-subtle);">
+                            curl -X POST https://api.chromehub.dev/v1/resize \
+                            -H "Authorization: Bearer sk_live_8f9a2b3c..." \
+                            -F "image=@icon.png" \
+                            -F "format=zip"
+                        </code>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <span style="color: var(--text-tertiary); font-size: 0.85rem;">
+                            🟢 <strong>Rate limit:</strong> 10,000 requests / month
+                        </span>
+                        <span style="color: var(--text-tertiary); font-size: 0.85rem;">
+                            📊 <strong>Used:</strong> 247 / 10,000 this month
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            TAB 3: ACCOUNT
+            ========================================================== -->
+            <div class="tab-content" id="tab-account">
+                <div class="grid-2">
+                    <!-- Account Info -->
+                    <div class="card">
+                        <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 4px;">👤 Account Details</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                            Your subscription and personal information.
+                        </p>
+
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" value="developer@example.com" id="userEmail" />
+                        </div>
+                        <div class="form-group">
+                            <label>Plan</label>
+                            <input type="text" value="Premium Pro – Lifetime" disabled style="opacity: 0.6;" />
+                        </div>
+                        <div class="form-group">
+                            <label>Purchased On</label>
+                            <input type="text" value="August 14, 2026" disabled style="opacity: 0.6;" />
+                        </div>
+
+                        <button class="btn btn-primary btn-block" onclick="updateAccount()">💾 Update Email</button>
+                    </div>
+
+                    <!-- Billing & Actions -->
+                    <div class="card">
+                        <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 4px;">⚙️ Account Actions</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+                            Manage your subscription and billing.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="background: var(--bg-elevated); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border-subtle);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong style="color: #fff;">💳 Payment Method</strong>
+                                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">•••• 4242 (Visa)</p>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm">Update</button>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-elevated); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border-subtle);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong style="color: #fff;">📄 Invoice History</strong>
+                                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">View all past receipts</p>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm">View</button>
+                                </div>
+                            </div>
+
+                            <div style="background: rgba(220, 38, 38, 0.06); border-radius: var(--radius); padding: 16px; border: 1px solid rgba(220, 38, 38, 0.2);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong style="color: var(--danger);">⚠️ Cancel Subscription</strong>
+                                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Your access will end at the end of the billing period</p>
+                                    </div>
+                                    <button class="btn btn-danger btn-sm" onclick="cancelSubscription()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================
+    SUPPORT SECTION
+    ============================================================ -->
+    <section style="padding-top: 20px; border-bottom: none;">
+        <div class="container">
+            <div class="card" style="border-color: var(--border-medium);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 24px;">
+                    <div>
+                        <h3 style="color: #fff; font-size: 1.1rem;">💬 Need help?</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; max-width: 400px;">
+                            Premium Pro users get priority support. We typically respond within 4 hours.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="mailto:support@chromehub.dev" class="btn btn-primary">📧 Email Support</a>
+                        <a href="#" class="btn btn-outline">📖 Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="font-size: 1.2rem;">Chrome<span>Hub</span></div>
+                    <p>The all‑in‑one toolkit for Chrome extension developers.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <span>Product</span>
+                        <a href="index.html#features">Features</a>
+                        <a href="index.html#pricing">Pricing</a>
+                        <a href="resizer.html">Resizer</a>
+                        <a href="extractor.html">Extractor</a>
+                    </div>
+                    <div>
+                        <span>Support</span>
+                        <a href="#faq">FAQ</a>
+                        <a href="license.html">Licensing</a>
+                        <a href="mailto:support@chromehub.dev">Contact</a>
+                    </div>
+                    <div>
+                        <span>Social</span>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 ChromeHub. All rights reserved.</span>
+                <span>Made with ☕ by an indie developer</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT — Tabs, API key, Downloads, Account actions
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- TAB SYSTEM ----
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = {
+                downloads: document.getElementById('tab-downloads'),
+                api: document.getElementById('tab-api'),
+                account: document.getElementById('tab-account')
+            };
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active from all buttons and contents
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    Object.values(tabContents).forEach(c => c.classList.remove('active'));
+
+                    // Activate this button
+                    this.classList.add('active');
+
+                    // Show corresponding content
+                    const tabName = this.dataset.tab;
+                    if (tabContents[tabName]) {
+                        tabContents[tabName].classList.add('active');
+                    }
+                });
+            });
+
+            // ---- API KEY ----
+            window.copyApiKey = function() {
+                const keyEl = document.getElementById('apiKey');
+                const key = keyEl.textContent.trim();
+                navigator.clipboard.writeText(key).then(() => {
+                    const btn = document.querySelector('.api-key-display .actions .btn-outline');
+                    const originalText = btn.textContent;
+                    btn.textContent = '✅ Copied!';
+                    setTimeout(() => { btn.textContent = originalText; }, 2000);
+                }).catch(() => {
+                    // Fallback
+                    const textarea = document.createElement('textarea');
+                    textarea.value = key;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('API key copied to clipboard!');
+                });
+            };
+
+            window.regenerateApiKey = function() {
+                if (confirm('Are you sure you want to regenerate your API key? This will invalidate the old key.')) {
+                    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                    let newKey = 'sk_live_';
+                    for (let i = 0; i < 40; i++) {
+                        newKey += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    document.getElementById('apiKey').textContent = newKey;
+                    alert('✅ API key regenerated successfully!');
+                }
+            };
+
+            // ---- DOWNLOAD SIMULATION ----
+            window.simulateDownload = function(filename) {
+                // Create a dummy ZIP file for demonstration
+                const content = `This is a simulated download of ${filename}. In production, this would contain the actual icon pack.`;
+                const blob = new Blob([content], { type: 'application/zip' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(a.href);
+
+                // Show a small feedback
+                const btns = document.querySelectorAll('.pack-list .btn');
+                btns.forEach(b => {
+                    if (b.textContent.includes('Download')) {
+                        const orig = b.textContent;
+                        b.textContent = '⬇️ Downloading...';
+                        setTimeout(() => { b.textContent = orig; }, 2000);
+                    }
+                });
+            };
+
+            // ---- ACCOUNT ----
+            window.updateAccount = function() {
+                const email = document.getElementById('userEmail').value;
+                if (email && email.includes('@')) {
+                    alert('✅ Email updated to: ' + email + '\n(Simulated – in production this would save to your account.)');
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            };
+
+            window.cancelSubscription = function() {
+                if (confirm('⚠️ Are you sure you want to cancel your Premium Pro subscription?\n\nYou will lose access to all premium features and icon packs.')) {
+                    if (confirm('Really? We\'d hate to see you go! 😢')) {
+                        alert('Subscription cancellation simulated.\n\nIn production, this would process through your payment provider.');
+                    }
+                }
+            };
+
+            // ---- STATS ANIMATION (optional) ----
+            // Just to add some flair, animate the stat numbers
+            const statPacks = document.getElementById('statPacks');
+            const statResizes = document.getElementById('statResizes');
+            const statExtractions = document.getElementById('statExtractions');
+
+            // Already set in HTML, but we can add a subtle pulse effect
+            setInterval(() => {
+                [statPacks, statResizes, statExtractions].forEach(el => {
+                    el.style.transition = 'transform 0.1s';
+                    el.style.transform = 'scale(1.05)';
+                    setTimeout(() => { el.style.transform = 'scale(1)'; }, 150);
+                });
+            }, 5000);
+
+            // ---- KEYBOARD SHORTCUT: switch tabs with 1, 2, 3 ----
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '1') {
+                    const btn = document.querySelector('.tab-btn[data-tab="downloads"]');
+                    if (btn) btn.click();
+                } else if (e.key === '2') {
+                    const btn = document.querySelector('.tab-btn[data-tab="api"]');
+                    if (btn) btn.click();
+                } else if (e.key === '3') {
+                    const btn = document.querySelector('.tab-btn[data-tab="account"]');
+                    if (btn) btn.click();
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
