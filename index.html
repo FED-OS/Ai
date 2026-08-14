@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome Asset Hub – The Ultimate Extension Toolkit</title>
+    <meta name="description" content="Fix Chrome Web Store rejections instantly. Resize icons, flatten alpha channels, extract assets, and download production-ready packs." />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Chrome Asset Hub – Stop Web Store Rejections" />
+    <meta property="og:description" content="Resize, flatten, extract, and package Chrome extension assets in one click." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/your-repo/" />
+    <meta property="og:image" content="https://yourusername.github.io/your-repo/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+        /* ============================================================
+           ULTRA-SHARP SOLID DARK THEME (Linear / Vercel inspired)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-surface: #141414;
+            --bg-elevated: #1c1c1c;
+            --border-subtle: #2a2a2a;
+            --border-medium: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #22c55e;
+            --radius: 12px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---- Container ---- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 32px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        nav a.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 6px 18px !important;
+            border-radius: 40px !important;
+            border: none !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-hover) !important;
+        }
+
+        /* ---- Buttons ---- */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #2a2a2a;
+            border-color: var(--border-medium);
+        }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-success {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+            border-color: #16a34a;
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--border-medium);
+        }
+        .btn-outline:hover {
+            background: var(--bg-elevated);
+        }
+        .btn-lg {
+            padding: 16px 40px;
+            font-size: 1.05rem;
+        }
+
+        /* ---- Cards ---- */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+        }
+
+        /* ---- Grids ---- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        /* ---- Sections ---- */
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---- Feature Icons ---- */
+        .feature-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .feature-card h3 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ---- Pricing ---- */
+        .tier-wrapper {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .tier-wrapper .card {
+            width: 30%;
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        .tier-wrapper .card.featured {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+        }
+        .badge-popular {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 14px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .price {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 8px 0;
+        }
+        .price span {
+            font-size: 0.4rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .card ul {
+            list-style: none;
+            margin: 20px 0 28px;
+            font-size: 0.9rem;
+        }
+        .card ul li {
+            padding: 4px 0;
+            color: var(--text-secondary);
+        }
+        .card ul li::before {
+            content: "✓ ";
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .card ul li.no::before {
+            content: "✕ ";
+            color: #dc2626;
+        }
+        .card ul li.no {
+            color: var(--text-tertiary);
+        }
+
+        /* ---- Testimonials ---- */
+        .testimonial-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+        .testimonial-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        .testimonial-card .author {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .testimonial-card .role {
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+
+        /* ---- FAQ (pure CSS accordion) ---- */
+        .faq-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .faq-item summary {
+            padding: 20px 24px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: "+";
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+        .faq-item[open] summary::after {
+            content: "−";
+        }
+        .faq-item .faq-answer {
+            padding: 0 24px 20px 24px;
+            color: var(--text-secondary);
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 300px;
+            margin-top: 8px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-links div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .footer-links div span {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .footer-links a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+                height: auto;
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .tier-wrapper .card {
+                width: 100%;
+                max-width: 400px;
+            }
+            section {
+                padding: 50px 0;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .footer-grid {
+                flex-direction: column;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* ---- Utility ---- */
+        .mt-8 {
+            margin-top: 32px;
+        }
+        .mt-12 {
+            margin-top: 48px;
+        }
+        .gap-12 {
+            gap: 48px;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    NAVIGATION
+    ============================================================ -->
+    <nav>
+        <div class="logo">Chrome<span>Hub</span></div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="resizer.html">Resizer</a>
+            <a href="extractor.html">Extractor</a>
+            <a href="#pricing" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section style="padding-top: 60px; padding-bottom: 60px; border-bottom: none;">
+        <div class="container text-center">
+            <h1 style="font-size: 3.4rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg, #ffffff 30%, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2;">
+                Stop Chrome Web Store<br />Rejections Instantly
+            </h1>
+            <p style="font-size: 1.25rem; color: var(--text-secondary); max-width: 650px; margin: 20px auto 32px;">
+                Resize icons, flatten alpha channels, extract assets, and download production‑ready PNG/JPEG packs — all in one place.
+            </p>
+            <div class="flex-center">
+                <a href="#pricing" class="btn btn-primary btn-lg">Start Building Free</a>
+                <a href="#features" class="btn btn-outline btn-lg">Explore Features</a>
+            </div>
+            <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 20px;">
+                🚀 Used by 2,000+ Chrome extension developers
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TRUST BAR (Logos / Tech Stack)
+    ============================================================ -->
+    <section style="padding: 24px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="container">
+            <p style="text-align: center; color: var(--text-tertiary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">
+                Trusted by builders from
+            </p>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; opacity: 0.5; filter: grayscale(1);">
+                <span style="font-weight: 700; font-size: 1.2rem; color: #fff;">Vercel</span>
+                <span style="font-weight: 700; font-size: 1.2rem; color: #fff;">Linear</span>
+                <span style="font-weight: 700; font-size: 1.2rem; color: #fff;">Supabase</span>
+                <span style="font-weight: 700; font-size: 1.2rem; color: #fff;">Railway</span>
+                <span style="font-weight: 700; font-size: 1.2rem; color: #fff;">Fly.io</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FEATURES (6 Cards)
+    ============================================================ -->
+    <section id="features">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Everything you need to ship</h2>
+                <p class="section-subtitle mx-auto">Six powerful tools that eliminate every Chrome Web Store asset headache.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card feature-card">
+                    <span class="feature-icon">⚙️</span>
+                    <h3>Instant Resizer</h3>
+                    <p>Generate 16×16, 32×32, 48×48, and 128×128 PNGs from a single master image.</p>
+                </div>
+                <div class="card feature-card">
+                    <span class="feature-icon">🖼️</span>
+                    <h3>JPEG Flattener</h3>
+                    <p>Strip alpha channels and export compliant 24‑bit JPEGs — no more “transparency” rejections.</p>
+                </div>
+                <div class="card feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <h3>Live Extractor</h3>
+                    <p>Pull icons and visuals directly from any extension on the Chrome Web Store.</p>
+                </div>
+                <div class="card feature-card">
+                    <span class="feature-icon">📚</span>
+                    <h3>Premium Icon Library</h3>
+                    <p>Access 150+ production‑ready glyphs in AI, SaaS, and e‑commerce styles.</p>
+                </div>
+                <div class="card feature-card">
+                    <span class="feature-icon">📦</span>
+                    <h3>Bulk ZIP Exporter</h3>
+                    <p>Download entire asset suites — icons + promo tiles — in one structured archive.</p>
+                </div>
+                <div class="card feature-card">
+                    <span class="feature-icon">📄</span>
+                    <h3>Manifest Snippet Generator</h3>
+                    <p>Copy‑paste ready <code style="background: var(--bg-elevated); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">manifest.json</code> code for your icons.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    HOW IT WORKS (3 Steps)
+    ============================================================ -->
+    <section>
+        <div class="container text-center">
+            <h2 class="section-title">How it works</h2>
+            <p class="section-subtitle mx-auto">From artwork to store‑ready assets in three simple steps.</p>
+
+            <div class="grid-3" style="margin-top: 16px;">
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 12px;">📥</div>
+                    <h3 style="color: #fff; font-size: 1.2rem;">1. Upload</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Drop your master artwork (PNG, JPG, WebP) into the resizer tool.</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 12px;">⚡</div>
+                    <h3 style="color: #fff; font-size: 1.2rem;">2. Process</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Our pipeline auto‑crops, scales, and flattens alpha channels for store compliance.</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 12px;">🎉</div>
+                    <h3 style="color: #fff; font-size: 1.2rem;">3. Download</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Get a structured ZIP with icons, promo tiles, and a ready‑to‑use manifest snippet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TESTIMONIALS
+    ============================================================ -->
+    <section>
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Loved by developers</h2>
+                <p class="section-subtitle mx-auto">Real feedback from the extension‑building community.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="testimonial-card">
+                    <p>“This tool saved me hours of manual resizing. The JPEG flattener alone is worth the lifetime price.”</p>
+                    <div class="author">Sarah K.</div>
+                    <div class="role">Full‑stack developer, 3 extensions shipped</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“I used to dread the Chrome Store upload process. Now I just drop my design and get everything in one ZIP.”</p>
+                    <div class="author">Alex Rivera</div>
+                    <div class="role">Indie maker, 12k MAU extension</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“The extractor helped me analyze competitor assets for design inspiration. Game changer.”</p>
+                    <div class="author">Maya Chen</div>
+                    <div class="role">Product designer, B2B SaaS</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    PRICING (Full Tier Table)
+    ============================================================ -->
+    <section id="pricing">
+        <div class="container text-center">
+            <h2 class="section-title">Simple, transparent pricing</h2>
+            <p class="section-subtitle mx-auto">Choose the plan that fits your workflow — lifetime access, no recurring fees.</p>
+
+            <div class="tier-wrapper">
+                <!-- Free -->
+                <div class="card">
+                    <div>
+                        <h3 style="color: #fff; font-size: 1.4rem;">Free Utility</h3>
+                        <div class="price">$0</div>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">Casual development tools</p>
+                        <ul>
+                            <li>3 conversions per day</li>
+                            <li>Single icon generator</li>
+                            <li>Standard visual crops</li>
+                            <li class="no">No production icon library</li>
+                            <li class="no">No batch extractor</li>
+                        </ul>
+                    </div>
+                    <a href="resizer.html" class="btn" style="width:100%;">Launch Free Tools</a>
+                </div>
+
+                <!-- Premium Pro -->
+                <div class="card featured">
+                    <span class="badge-popular">⭐ Popular</span>
+                    <div>
+                        <h3 style="color: #fff; font-size: 1.4rem;">Premium Pro</h3>
+                        <div class="price">$29 <span>lifetime</span></div>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">For solo creators &amp; agencies</p>
+                        <ul>
+                            <li>Unlimited resizer operations</li>
+                            <li>Automatic opaque flattening</li>
+                            <li>Full icon library access</li>
+                            <li>Bulk target ZIP packs</li>
+                            <li>Commercial use rights</li>
+                        </ul>
+                    </div>
+                    <a href="https://lemonsqueezy.com/your-product" class="btn btn-primary" style="width:100%;">Get Lifetime Access</a>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="card">
+                    <div>
+                        <h3 style="color: #fff; font-size: 1.4rem;">Enterprise API</h3>
+                        <div class="price">$99 <span>lifetime</span></div>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">Automated headless scripts</p>
+                        <ul>
+                            <li>Everything in Premium Pro</li>
+                            <li>Unlimited endpoint calls</li>
+                            <li>Webhook data integration</li>
+                            <li>Node/Python CLI access</li>
+                            <li>Priority feature updates</li>
+                        </ul>
+                    </div>
+                    <a href="https://lemonsqueezy.com/your-api-product" class="btn btn-success" style="width:100%;">Get API Token</a>
+                </div>
+            </div>
+
+            <!-- Tip Jar -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: 20px 28px; max-width: 600px; margin: 40px auto 0;">
+                <span style="color: var(--text-secondary);">☕ Support an indie developer?</span>
+                <a href="https://buymeacoffee.com/yourpage" target="_blank" style="color: #fbbf24; font-weight: 600; text-decoration: none; margin-left: 8px;">Buy me a coffee →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FAQ (Accordion)
+    ============================================================ -->
+    <section id="faq">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Frequently asked questions</h2>
+                <p class="section-subtitle mx-auto">Quick answers to the most common questions.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <details class="faq-item">
+                    <summary>What file formats do you support?</summary>
+                    <div class="faq-answer">We accept PNG, JPG, WebP, and Figma exports. All output is delivered as PNG (with transparency) or JPEG (flattened to 24‑bit RGB).</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my asset stored on your servers?</summary>
+                    <div class="faq-answer">No. All processing happens entirely in your browser. Your images are never uploaded to any server — privacy by design.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What happens when I hit the free limit?</summary>
+                    <div class="faq-answer">The free tier allows 3 conversions per day. After that, you'll be prompted to upgrade to Premium Pro for unlimited access.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I use the icons in commercial projects?</summary>
+                    <div class="faq-answer">Yes. Premium Pro and Enterprise licenses grant full commercial rights. You can deploy them in SaaS products, browser extensions, and client work.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you offer refunds?</summary>
+                    <div class="faq-answer">Yes. We offer a 14‑day money‑back guarantee on all paid plans. No questions asked.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FINAL CTA
+    ============================================================ -->
+    <section style="border-bottom: none; padding-bottom: 60px;">
+        <div class="container text-center">
+            <div style="background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 48px 32px; max-width: 800px; margin: 0 auto;">
+                <h2 style="color: #fff; font-size: 2rem; margin-bottom: 12px;">Ready to ship your extension?</h2>
+                <p style="color: var(--text-secondary); font-size: 1.05rem; max-width: 500px; margin: 0 auto 28px;">
+                    Join 2,000+ developers who never see a Chrome Store rejection again.
+                </p>
+                <a href="#pricing" class="btn btn-primary btn-lg">Get Started Now →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="font-size: 1.2rem;">Chrome<span>Hub</span></div>
+                    <p>The all‑in‑one toolkit for Chrome extension developers.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <span>Product</span>
+                        <a href="#features">Features</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="resizer.html">Resizer</a>
+                        <a href="extractor.html">Extractor</a>
+                    </div>
+                    <div>
+                        <span>Support</span>
+                        <a href="#faq">FAQ</a>
+                        <a href="license.html">Licensing</a>
+                        <a href="mailto:hello@example.com">Contact</a>
+                    </div>
+                    <div>
+                        <span>Social</span>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 ChromeHub. All rights reserved.</span>
+                <span>Made with ☕ by an indie developer</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
