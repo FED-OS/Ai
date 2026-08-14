@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Icon Library – Production‑Ready Stacks for Chrome Extensions</title>
+    <meta name="description" content="Premium icon packs for Chrome extensions – 16px to 128px PNGs, .ico containers, and manifest snippets. AI, SaaS, and E‑Commerce styles." />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="ChromeHub – Premium Icon Library" />
+    <meta property="og:description" content="Download ready‑to‑use icon stacks with commercial licenses. Save hours of design work." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/your-repo/stacks.html" />
+    <meta property="og:image" content="https://yourusername.github.io/your-repo/og-image-library.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+        /* ============================================================
+           ULTRA-SHARP SOLID DARK THEME (same as index)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-surface: #141414;
+            --bg-elevated: #1c1c1c;
+            --border-subtle: #2a2a2a;
+            --border-medium: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #22c55e;
+            --radius: 12px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 32px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s ease;
+        }
+        nav a:hover {
+            color: var(--text-primary);
+        }
+        nav a.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 6px 18px !important;
+            border-radius: 40px !important;
+            border: none !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-hover) !important;
+        }
+
+        /* ---- Buttons ---- */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #2a2a2a;
+            border-color: var(--border-medium);
+        }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-success {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+            border-color: #16a34a;
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--border-medium);
+        }
+        .btn-outline:hover {
+            background: var(--bg-elevated);
+        }
+        .btn-sm {
+            padding: 8px 20px;
+            font-size: 0.85rem;
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* ---- Cards ---- */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+        }
+
+        /* ---- Grids ---- */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        /* ---- Sections ---- */
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---- Category Filter Tabs ---- */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 8px 24px;
+            border-radius: 40px;
+            border: 1px solid var(--border-subtle);
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-tab:hover {
+            border-color: var(--border-medium);
+            color: #fff;
+        }
+        .filter-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* ---- Pack Card (detailed) ---- */
+        .pack-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+        .pack-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-3px);
+        }
+        .pack-card .preview {
+            font-size: 3.5rem;
+            text-align: center;
+            padding: 20px 0;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-subtle);
+        }
+        .pack-card h3 {
+            color: #fff;
+            font-size: 1.25rem;
+            margin-bottom: 6px;
+        }
+        .pack-card .description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+        .pack-card .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+            font-size: 0.85rem;
+        }
+        .pack-card .feature-list li {
+            padding: 4px 0;
+            color: var(--text-secondary);
+        }
+        .pack-card .feature-list li::before {
+            content: "✓ ";
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .pack-card .price-tag {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+        .pack-card .price-tag span {
+            color: var(--text-tertiary);
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+
+        /* ---- Free Sample Pack (lead magnet) ---- */
+        .sample-pack {
+            background: var(--bg-surface);
+            border: 2px dashed var(--accent);
+            border-radius: var(--radius);
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin: 40px 0;
+        }
+        .sample-pack .content h3 {
+            color: #fff;
+            font-size: 1.3rem;
+        }
+        .sample-pack .content p {
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ---- Stats / Trust ---- */
+        .stat-grid {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-item .number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .stat-item .label {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+
+        /* ---- FAQ ---- */
+        .faq-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .faq-item summary {
+            padding: 20px 24px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: "+";
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+        .faq-item[open] summary::after {
+            content: "−";
+        }
+        .faq-item .faq-answer {
+            padding: 0 24px 20px 24px;
+            color: var(--text-secondary);
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 300px;
+            margin-top: 8px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-links div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .footer-links div span {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .footer-links a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+                height: auto;
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .grid-3,
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            section {
+                padding: 50px 0;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .stat-grid {
+                gap: 30px;
+            }
+            .sample-pack {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+            .footer-grid {
+                flex-direction: column;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    NAVIGATION
+    ============================================================ -->
+    <nav>
+        <div class="logo">Chrome<span>Hub</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="stacks.html" class="active">Icon Library</a>
+            <a href="resizer.html">Resizer</a>
+            <a href="extractor.html">Extractor</a>
+            <a href="index.html#pricing" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section style="padding-top: 60px; padding-bottom: 40px; border-bottom: none;">
+        <div class="container text-center">
+            <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #ffffff 30%, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Premium Icon Stacks
+            </h1>
+            <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 650px; margin: 16px auto 0;">
+                Production‑ready packs with exact sizes (16–128px), .ico containers, and copy‑paste manifest code. Save hours of design and formatting.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    STATS / TRUST BAR
+    ============================================================ -->
+    <section style="padding: 20px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="container">
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="number">150+</div>
+                    <div class="label">Total Icons</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">3</div>
+                    <div class="label">Thematic Packs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">4</div>
+                    <div class="label">Sizes per Icon</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">.ico</div>
+                    <div class="label">Container Included</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CATEGORY FILTERS (visual only – all packs shown)
+    ============================================================ -->
+    <section style="padding: 40px 0 20px; border-bottom: none;">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterPacks('all')">All Packs</button>
+                <button class="filter-tab" onclick="filterPacks('ai')">🤖 AI & Automation</button>
+                <button class="filter-tab" onclick="filterPacks('saas')">📊 B2B SaaS</button>
+                <button class="filter-tab" onclick="filterPacks('ecom')">🛍️ E‑Commerce</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    PACK GRID
+    ============================================================ -->
+    <section style="padding-top: 0; border-bottom: none;">
+        <div class="container">
+            <div class="grid-3" id="packGrid">
+
+                <!-- ─── PACK 1: AI SIDEBAR ─── -->
+                <div class="pack-card" data-category="ai">
+                    <div class="preview">🤖✨⚙️</div>
+                    <h3>AI Sidebar &amp; Automation</h3>
+                    <p class="description">50 high‑tech neon glyphs built specifically for Chrome Sidepanel API extensions.</p>
+                    <ul class="feature-list">
+                        <li>16, 32, 48, 128px PNGs</li>
+                        <li>Master .ico container</li>
+                        <li>Manifest.json snippet</li>
+                        <li>Commercial license</li>
+                    </ul>
+                    <div class="price-tag">$12 <span>one‑time</span></div>
+                    <a href="https://lemonsqueezy.com/ai-pack" class="btn btn-primary btn-block">Unlock Stack →</a>
+                </div>
+
+                <!-- ─── PACK 2: B2B SaaS ─── -->
+                <div class="pack-card" data-category="saas">
+                    <div class="preview">📊📈💎</div>
+                    <h3>B2B SaaS &amp; Fintech Matrix</h3>
+                    <p class="description">65 ultra‑clean minimal shapes optimized for crisp toolbar visibility at small sizes.</p>
+                    <ul class="feature-list">
+                        <li>16, 32, 48, 128px PNGs</li>
+                        <li>Master .ico container</li>
+                        <li>Manifest.json snippet</li>
+                        <li>Commercial license</li>
+                    </ul>
+                    <div class="price-tag">$12 <span>one‑time</span></div>
+                    <a href="https://lemonsqueezy.com/saas-pack" class="btn btn-primary btn-block">Unlock Stack →</a>
+                </div>
+
+                <!-- ─── PACK 3: E‑COMMERCE ─── -->
+                <div class="pack-card" data-category="ecom">
+                    <div class="preview">📦🛍️🏷️</div>
+                    <h3>E‑Commerce &amp; Coupon Glyphs</h3>
+                    <p class="description">40 vibrant badges engineered to pop against bright consumer store pages.</p>
+                    <ul class="feature-list">
+                        <li>16, 32, 48, 128px PNGs</li>
+                        <li>Master .ico container</li>
+                        <li>Manifest.json snippet</li>
+                        <li>Commercial license</li>
+                    </ul>
+                    <div class="price-tag">$12 <span>one‑time</span></div>
+                    <a href="https://lemonsqueezy.com/ecom-pack" class="btn btn-primary btn-block">Unlock Stack →</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FREE SAMPLE PACK (Lead Magnet)
+    ============================================================ -->
+    <section style="padding: 40px 0; border-bottom: none;">
+        <div class="container">
+            <div class="sample-pack">
+                <div class="content">
+                    <h3>🎁 Try before you buy</h3>
+                    <p>Get a free sample pack with 5 icons from each category — zero strings attached.</p>
+                </div>
+                <a href="#" class="btn btn-success" onclick="alert('Sample pack download started! (simulated)')">Download Free Sample</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    WHY BUY FROM US (Trust / Differentiators)
+    ============================================================ -->
+    <section style="padding: 60px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="container text-center">
+            <h2 class="section-title">Designed for developers, by a developer</h2>
+            <p class="section-subtitle mx-auto">Every pack is hand‑crafted to meet Chrome Web Store requirements out of the box.</p>
+
+            <div class="grid-3" style="margin-top: 16px;">
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">📐</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">Pixel‑perfect at 16px</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Icons remain crisp and recognizable even in the tiny browser toolbar.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">📦</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">Drop‑in ready</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Each pack includes a <code style="background: var(--bg-elevated); padding: 2px 8px; border-radius: 4px;">manifest.json</code> snippet — copy, paste, done.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">🔄</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">Multi‑platform</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">PNGs for Chrome, .ico for Windows / Edge / Firefox companion apps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FAQ (Library Specific)
+    ============================================================ -->
+    <section id="faq" style="padding: 60px 0;">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Frequently asked questions</h2>
+                <p class="section-subtitle mx-auto">Everything you need to know about our icon packs.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <details class="faq-item">
+                    <summary>What file formats are included?</summary>
+                    <div class="faq-answer">Each pack contains PNG files at 16×16, 32×32, 48×48, and 128×128 pixels, plus a master .ico container with all sizes embedded.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I use these in a commercial extension?</summary>
+                    <div class="faq-answer">Yes. All paid packs include a full commercial license. You can use them in your own SaaS products, browser extensions, and client projects without any royalties.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you offer refunds?</summary>
+                    <div class="faq-answer">Absolutely. We offer a 14‑day money‑back guarantee. If the packs don't meet your expectations, we'll refund you in full.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Are the icons editable?</summary>
+                    <div class="faq-answer">Yes. You can modify, recolor, or crop them to match your brand. The commercial license permits full customization.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What if I need a custom pack?</summary>
+                    <div class="faq-answer">Reach out via the contact link in the footer. I offer bespoke icon design for your specific extension niche.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FINAL CTA
+    ============================================================ -->
+    <section style="border-bottom: none; padding-bottom: 60px;">
+        <div class="container text-center">
+            <div style="background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 48px 32px; max-width: 800px; margin: 0 auto;">
+                <h2 style="color: #fff; font-size: 2rem; margin-bottom: 12px;">Ready to ship with premium icons?</h2>
+                <p style="color: var(--text-secondary); font-size: 1.05rem; max-width: 500px; margin: 0 auto 28px;">
+                    Get all 3 packs in a discounted bundle and never worry about icon formatting again.
+                </p>
+                <a href="https://lemonsqueezy.com/bundle" class="btn btn-success btn-lg">Buy All 3 Packs ($29)</a>
+                <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 16px;">⭐ Save 20% compared to buying individually</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="font-size: 1.2rem;">Chrome<span>Hub</span></div>
+                    <p>The all‑in‑one toolkit for Chrome extension developers.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <span>Product</span>
+                        <a href="index.html#features">Features</a>
+                        <a href="index.html#pricing">Pricing</a>
+                        <a href="resizer.html">Resizer</a>
+                        <a href="extractor.html">Extractor</a>
+                    </div>
+                    <div>
+                        <span>Support</span>
+                        <a href="#faq">FAQ</a>
+                        <a href="license.html">Licensing</a>
+                        <a href="mailto:hello@example.com">Contact</a>
+                    </div>
+                    <div>
+                        <span>Social</span>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 ChromeHub. All rights reserved.</span>
+                <span>Made with ☕ by an indie developer</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT: Filter Tabs (simple toggle)
+    ============================================================ -->
+    <script>
+        function filterPacks(category) {
+            // Update active tab style
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show / hide packs
+            const packs = document.querySelectorAll('.pack-card');
+            packs.forEach(pack => {
+                if (category === 'all' || pack.dataset.category === category) {
+                    pack.style.display = 'flex';
+                } else {
+                    pack.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
