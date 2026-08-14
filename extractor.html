@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome Web Store Asset Extractor – ChromeHub</title>
+    <meta name="description" content="Extract icons, screenshots, and promo visuals from any live Chrome extension — perfect for research and competitor analysis." />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="ChromeHub – Web Store Asset Extractor" />
+    <meta property="og:description" content="Pull assets from any Chrome extension instantly. Free tier: 3 extractions per day." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/your-repo/extractor.html" />
+    <meta property="og:image" content="https://yourusername.github.io/your-repo/og-image-extractor.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+        /* ============================================================
+           ULTRA-SHARP SOLID DARK THEME (same as all pages)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-surface: #141414;
+            --bg-elevated: #1c1c1c;
+            --border-subtle: #2a2a2a;
+            --border-medium: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --radius: 12px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 32px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s ease;
+        }
+        nav a:hover {
+            color: var(--text-primary);
+        }
+        nav a.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 6px 18px !important;
+            border-radius: 40px !important;
+            border: none !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-hover) !important;
+        }
+
+        /* ---- Buttons ---- */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #2a2a2a;
+            border-color: var(--border-medium);
+        }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-success {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+            border-color: #16a34a;
+        }
+        .btn-warning {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: #000;
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            border-color: #d97706;
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(0.5);
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* ---- Cards ---- */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+        }
+
+        /* ---- Grids ---- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        /* ---- Sections ---- */
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 32px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---- Input Group ---- */
+        .input-group {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin: 20px 0;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-app);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .input-group .extract-btn {
+            margin-top: 16px;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+        }
+
+        /* ---- Status / Result Area ---- */
+        .status-area {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            display: none;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .status-area.show {
+            display: flex;
+        }
+        .status-area .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-subtle);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .status-area .message {
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        .status-area .message strong {
+            color: #fff;
+        }
+        .status-area .download-link {
+            color: var(--accent);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .status-area .download-link:hover {
+            color: var(--accent-hover);
+        }
+
+        /* ---- Usage Counter ---- */
+        .usage-counter {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 12px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .usage-counter .count {
+            color: #fff;
+            font-weight: 700;
+        }
+        .usage-counter .count.limit-hit {
+            color: #dc2626;
+        }
+
+        /* ---- FAQ ---- */
+        .faq-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .faq-item summary {
+            padding: 18px 24px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: "+";
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+        .faq-item[open] summary::after {
+            content: "−";
+        }
+        .faq-item .faq-answer {
+            padding: 0 24px 20px 24px;
+            color: var(--text-secondary);
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 300px;
+            margin-top: 8px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-links div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .footer-links div span {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .footer-links a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+                height: auto;
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            section {
+                padding: 40px 0;
+            }
+            .footer-grid {
+                flex-direction: column;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    NAVIGATION
+    ============================================================ -->
+    <nav>
+        <div class="logo">Chrome<span>Hub</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="stacks.html">Icon Library</a>
+            <a href="resizer.html">Resizer</a>
+            <a href="extractor.html" class="active">Extractor</a>
+            <a href="index.html#pricing" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section style="padding-top: 60px; padding-bottom: 20px; border-bottom: none;">
+        <div class="container text-center">
+            <h1 style="font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #ffffff 30%, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Live Web Store Asset Extractor
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 650px; margin: 12px auto 0;">
+                Paste any Chrome Web Store URL and instantly extract icons, screenshots, and promo visuals — perfect for competitor research and design inspiration.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TOOL AREA
+    ============================================================ -->
+    <section style="padding-top: 20px; border-bottom: none;">
+        <div class="container">
+
+            <!-- Usage Counter -->
+            <div class="usage-counter" id="usageCounter">
+                <span>📊 Today's extractions:</span>
+                <span class="count" id="usageCount">0</span>
+                <span>/ 3 free</span>
+                <span style="margin-left: 8px; font-size: 0.8rem; color: var(--text-tertiary);">(upgrade for unlimited)</span>
+            </div>
+
+            <!-- Input Group -->
+            <div class="input-group">
+                <label for="storeUrl">🔗 Chrome Web Store URL:</label>
+                <input type="url" id="storeUrl" placeholder="https://chromewebstore.google.com/..." value="https://chromewebstore.google.com/detail/example" />
+                <button class="btn btn-primary extract-btn" id="extractBtn">🔍 Extract Assets</button>
+            </div>
+
+            <!-- Status / Result Area -->
+            <div class="status-area" id="statusArea">
+                <div class="spinner" id="spinner"></div>
+                <div class="message" id="statusMessage">
+                    <strong>Extracting...</strong> Please wait while we fetch the assets.
+                </div>
+                <a href="#" class="download-link" id="downloadLink" style="display: none;">⬇️ Download ZIP</a>
+            </div>
+
+            <!-- Upgrade prompt (hidden by default) -->
+            <div id="upgradePrompt" style="display: none; margin-top: 20px; background: rgba(220, 38, 38, 0.08); border: 1px solid #dc2626; border-radius: var(--radius); padding: 20px 24px; text-align: center;">
+                <p style="color: #dc2626; font-weight: 600;">⚠️ You've reached your daily free limit of 3 extractions.</p>
+                <p style="color: var(--text-secondary); margin: 8px 0 16px;">Upgrade to <strong>Premium Pro</strong> for unlimited extractions and full asset downloads.</p>
+                <a href="index.html#pricing" class="btn btn-primary">View Pricing →</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FEATURES / HOW IT WORKS
+    ============================================================ -->
+    <section style="padding: 40px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="container text-center">
+            <h2 class="section-title">What you can extract</h2>
+            <div class="grid-3" style="margin-top: 16px;">
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">🖼️</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">Icons</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">All icon sizes (16–128px) used in the extension.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">📸</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">Screenshots</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Store listing screenshots and promo tiles.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">📝</div>
+                    <h3 style="color: #fff; font-size: 1.1rem;">Metadata</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Extension name, description, and category tags.</p>
+                </div>
+            </div>
+            <p style="color: var(--text-tertiary); font-size: 0.9rem; margin-top: 24px;">
+                💡 Use extracted assets for competitive analysis, design research, or to learn from successful extensions.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FAQ (Extractor-specific)
+    ============================================================ -->
+    <section id="faq" style="padding: 60px 0;">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Frequently asked questions</h2>
+                <p class="section-subtitle mx-auto">Everything you need to know about the extractor tool.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <details class="faq-item">
+                    <summary>Is this legal? Can I extract assets from any extension?</summary>
+                    <div class="faq-answer">Yes, extracting publicly available assets (icons, screenshots) from the Chrome Web Store for research and educational purposes is generally permissible under fair use. However, we recommend respecting copyright and not redistributing the assets without permission. Use this tool responsibly.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>How does the extraction work?</summary>
+                    <div class="faq-answer">The tool uses a public proxy service to fetch the extension's page and parse the manifest and asset URLs. All extraction happens server‑side through our secure proxy — your IP is never exposed.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What formats are the extracted assets in?</summary>
+                    <div class="faq-answer">Icons are exported as PNG files with their original sizes. Screenshots are downloaded as JPG/PNG as provided by the store. Everything is bundled into a convenient ZIP archive.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Why is there a daily limit?</summary>
+                    <div class="faq-answer">The free tier is limited to 3 extractions per day to prevent abuse and keep the proxy service sustainable. Upgrade to Premium Pro for unlimited extractions and priority access.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I extract assets from private or unlisted extensions?</summary>
+                    <div class="faq-answer">No, the extractor only works with public Chrome Web Store listings. Private extensions are not accessible via the public store API.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FINAL CTA
+    ============================================================ -->
+    <section style="border-bottom: none; padding-bottom: 60px;">
+        <div class="container text-center">
+            <div style="background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 40px 32px; max-width: 700px; margin: 0 auto;">
+                <h2 style="color: #fff; font-size: 1.8rem; margin-bottom: 8px;">Need unlimited extractions?</h2>
+                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 24px;">
+                    Upgrade to Premium Pro and get unlimited asset extraction, full ZIP downloads, and priority support.
+                </p>
+                <a href="index.html#pricing" class="btn btn-success" style="font-size: 1.1rem; padding: 14px 40px;">See Pricing →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="font-size: 1.2rem;">Chrome<span>Hub</span></div>
+                    <p>The all‑in‑one toolkit for Chrome extension developers.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <span>Product</span>
+                        <a href="index.html#features">Features</a>
+                        <a href="index.html#pricing">Pricing</a>
+                        <a href="resizer.html">Resizer</a>
+                        <a href="extractor.html">Extractor</a>
+                    </div>
+                    <div>
+                        <span>Support</span>
+                        <a href="#faq">FAQ</a>
+                        <a href="license.html">Licensing</a>
+                        <a href="mailto:hello@example.com">Contact</a>
+                    </div>
+                    <div>
+                        <span>Social</span>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 ChromeHub. All rights reserved.</span>
+                <span>Made with ☕ by an indie developer</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT — Extraction simulation with limit enforcement
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- DOM refs ----
+            const extractBtn = document.getElementById('extractBtn');
+            const storeUrl = document.getElementById('storeUrl');
+            const statusArea = document.getElementById('statusArea');
+            const statusMessage = document.getElementById('statusMessage');
+            const spinner = document.getElementById('spinner');
+            const downloadLink = document.getElementById('downloadLink');
+            const usageCount = document.getElementById('usageCount');
+            const upgradePrompt = document.getElementById('upgradePrompt');
+
+            // ---- Usage tracking (same as resizer) ----
+            function getToday() {
+                return new Date().toDateString();
+            }
+
+            function getUsage() {
+                const today = getToday();
+                const storedDate = localStorage.getItem('extractor_date');
+                const storedCount = parseInt(localStorage.getItem('extractor_count') || '0', 10);
+                if (storedDate !== today) {
+                    localStorage.setItem('extractor_date', today);
+                    localStorage.setItem('extractor_count', '0');
+                    return 0;
+                }
+                return storedCount;
+            }
+
+            function incrementUsage() {
+                const today = getToday();
+                const current = getUsage();
+                const newCount = current + 1;
+                localStorage.setItem('extractor_date', today);
+                localStorage.setItem('extractor_count', String(newCount));
+                return newCount;
+            }
+
+            function updateUsageUI() {
+                const count = getUsage();
+                usageCount.textContent = count;
+                if (count >= 3) {
+                    usageCount.classList.add('limit-hit');
+                    upgradePrompt.style.display = 'block';
+                    extractBtn.disabled = true;
+                } else {
+                    usageCount.classList.remove('limit-hit');
+                    upgradePrompt.style.display = 'none';
+                    extractBtn.disabled = false;
+                }
+            }
+
+            // ---- Show / hide status ----
+            function showStatus(message, isComplete = false) {
+                statusArea.classList.add('show');
+                statusMessage.innerHTML = message;
+                if (isComplete) {
+                    spinner.style.display = 'none';
+                } else {
+                    spinner.style.display = 'block';
+                }
+            }
+
+            function hideStatus() {
+                statusArea.classList.remove('show');
+                downloadLink.style.display = 'none';
+                spinner.style.display = 'block';
+            }
+
+            // ---- Extraction simulation ----
+            function simulateExtraction(url) {
+                // Check limit again (just in case)
+                if (getUsage() >= 3) {
+                    alert('Daily free limit reached. Please upgrade to Premium Pro.');
+                    updateUsageUI();
+                    return;
+                }
+
+                // Disable button during extraction
+                extractBtn.disabled = true;
+                extractBtn.textContent = '⏳ Extracting...';
+
+                // Show status with spinner
+                showStatus('<strong>Connecting to Chrome Web Store...</strong> Please wait.');
+
+                // Simulate steps with progress updates
+                let step = 0;
+                const steps = [
+                    '🔍 Fetching extension manifest...',
+                    '📦 Extracting icon URLs...',
+                    '🖼️ Downloading screenshots...',
+                    '📝 Gathering metadata...',
+                    '📦 Packaging assets into ZIP...'
+                ];
+
+                const interval = setInterval(() => {
+                    if (step < steps.length) {
+                        statusMessage.innerHTML = `<strong>${steps[step]}</strong>`;
+                        step++;
+                    } else {
+                        clearInterval(interval);
+                        // Complete
+                        completeExtraction(url);
+                    }
+                }, 800);
+
+                // Fallback in case something takes too long
+                setTimeout(() => {
+                    if (step < steps.length) {
+                        clearInterval(interval);
+                        completeExtraction(url);
+                    }
+                }, 6000);
+            }
+
+            function completeExtraction(url) {
+                // Increment usage
+                const newCount = incrementUsage();
+                updateUsageUI();
+
+                // Show success message with download link
+                showStatus(
+                    `<strong>✅ Extraction complete!</strong> Found 6 icons and 3 screenshots. <span class="download-link" id="fakeDownload">⬇️ Click here to download ZIP</span> (simulated)`,
+                    true
+                );
+
+                // Add fake download handler
+                document.getElementById('fakeDownload').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Simulate downloading a dummy ZIP
+                    const dummyContent = new Blob(['This is a simulated ZIP archive.'], { type: 'application/zip' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(dummyContent);
+                    a.download = 'extracted-assets.zip';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(a.href);
+                });
+
+                // Re-enable button
+                extractBtn.disabled = false;
+                extractBtn.textContent = '🔍 Extract Assets';
+
+                // If limit hit after increment, disable button
+                if (getUsage() >= 3) {
+                    extractBtn.disabled = true;
+                }
+            }
+
+            // ---- Extract button click ----
+            extractBtn.addEventListener('click', function() {
+                const url = storeUrl.value.trim();
+                if (!url) {
+                    alert('Please paste a valid Chrome Web Store URL.');
+                    return;
+                }
+
+                // Basic URL validation
+                try {
+                    new URL(url);
+                } catch (_) {
+                    alert('Invalid URL. Please enter a full Chrome Web Store URL.');
+                    return;
+                }
+
+                // Check limit before starting
+                if (getUsage() >= 3) {
+                    alert('Daily free limit reached. Please upgrade to Premium Pro.');
+                    updateUsageUI();
+                    return;
+                }
+
+                // Hide any previous download link
+                downloadLink.style.display = 'none';
+                simulateExtraction(url);
+            });
+
+            // ---- Init ----
+            updateUsageUI();
+
+            // Optional: auto-demo with example URL
+            // storeUrl.value = 'https://chromewebstore.google.com/detail/example';
+
+        })();
+    </script>
+
+</body>
+</html>
