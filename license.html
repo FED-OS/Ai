@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Licensing & Terms – ChromeHub</title>
+    <meta name="description" content="Clear licensing terms for using ChromeHub's icon packs, tools, and assets. Commercial use, refunds, and privacy explained." />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="ChromeHub – Licensing & Terms" />
+    <meta property="og:description" content="Read the licensing terms for our icon packs and tools. Commercial use permitted, with clear restrictions." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/your-repo/license.html" />
+    <meta property="og:image" content="https://yourusername.github.io/your-repo/og-image-license.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+        /* ============================================================
+           ULTRA-SHARP SOLID DARK THEME (same as all pages)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-surface: #141414;
+            --bg-elevated: #1c1c1c;
+            --border-subtle: #2a2a2a;
+            --border-medium: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --radius: 12px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 32px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s ease;
+        }
+        nav a:hover {
+            color: var(--text-primary);
+        }
+        nav a.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 6px 18px !important;
+            border-radius: 40px !important;
+            border: none !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-hover) !important;
+        }
+
+        /* ---- Buttons ---- */
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #2a2a2a;
+            border-color: var(--border-medium);
+        }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--border-medium);
+        }
+        .btn-outline:hover {
+            background: var(--bg-elevated);
+        }
+
+        /* ---- Cards ---- */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            transition: border-color 0.2s ease;
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+        }
+
+        /* ---- Sections ---- */
+        section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---- License specific ---- */
+        .license-block {
+            border-left: 4px solid var(--accent);
+            padding-left: 20px;
+            margin-bottom: 24px;
+        }
+        .license-block.green {
+            border-left-color: var(--success);
+        }
+        .license-block.red {
+            border-left-color: var(--danger);
+        }
+        .license-block.warning {
+            border-left-color: var(--warning);
+        }
+        .license-block h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+        .license-block p,
+        .license-block ul {
+            color: var(--text-secondary);
+        }
+        .license-block ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+        .license-block ul li {
+            margin-bottom: 4px;
+        }
+        .license-block ul li strong {
+            color: #fff;
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 300px;
+            margin-top: 8px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-links div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .footer-links div span {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .footer-links a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+                height: auto;
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            section {
+                padding: 30px 0;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .footer-grid {
+                flex-direction: column;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .license-block {
+                padding-left: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    NAVIGATION
+    ============================================================ -->
+    <nav>
+        <div class="logo">Chrome<span>Hub</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="stacks.html">Icon Library</a>
+            <a href="resizer.html">Resizer</a>
+            <a href="extractor.html">Extractor</a>
+            <a href="dashboard.html">⭐ Premium Hub</a>
+            <a href="license.html" class="active">📜 Licensing</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section style="padding-top: 60px; padding-bottom: 20px; border-bottom: none;">
+        <div class="container text-center">
+            <h1 style="font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #ffffff 30%, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Licensing &amp; Terms
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 650px; margin: 12px auto 0;">
+                Clear, fair terms for using our icon packs, tools, and assets. Read on to understand your rights and obligations.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    MAIN LICENSE CONTENT
+    ============================================================ -->
+    <section style="padding-top: 10px;">
+        <div class="container">
+
+            <!-- Permitted Use -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="license-block green">
+                    <h3>🟢 Permitted Use</h3>
+                    <p>You are allowed to:</p>
+                    <ul>
+                        <li><strong>Use the assets in personal and commercial projects</strong> — including SaaS products, browser extensions, websites, and mobile apps.</li>
+                        <li><strong>Modify, crop, recolor, or resize</strong> the icons to fit your design needs.</li>
+                        <li><strong>Deploy the assets in unlimited projects</strong> — no per‑project fees or royalties.</li>
+                        <li><strong>Share the assets with your team</strong> for collaborative work (internal use).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Restricted Actions -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="license-block red">
+                    <h3>🔴 Restricted Actions</h3>
+                    <p>You may <strong>not</strong>:</p>
+                    <ul>
+                        <li><strong>Resell, sub‑license, or redistribute</strong> the raw icon files as standalone assets (e.g., selling them as an icon pack on a marketplace).</li>
+                        <li><strong>Use the assets in a way that competes</strong> directly with our product (e.g., creating a competing icon library).</li>
+                        <li><strong>Claim ownership</strong> of the assets — the intellectual property remains with ChromeHub.</li>
+                        <li><strong>Use the assets in illegal, offensive, or misleading</strong> contexts.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Disclaimer / Warranty -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="license-block warning">
+                    <h3>⚠️ Disclaimer of Warranties</h3>
+                    <p>
+                        The assets are provided “as is” without warranty of any kind, either express or implied.
+                        ChromeHub does not guarantee that the assets are error‑free or will meet your specific requirements.
+                        We are not liable for any damages arising from the use of the assets.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Refund Policy -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="license-block" style="border-left-color: var(--accent);">
+                    <h3>💵 Refund Policy</h3>
+                    <p>
+                        We offer a <strong>14‑day money‑back guarantee</strong> on all paid products (Premium Pro and Enterprise API).
+                        If you are not satisfied, simply contact us at <a href="mailto:support@chromehub.dev" style="color: var(--accent); text-decoration: none;">support@chromehub.dev</a> within 14 days of purchase.
+                        We will issue a full refund — no questions asked.
+                    </p>
+                    <p style="margin-top: 8px; color: var(--text-tertiary); font-size: 0.9rem;">
+                        Refunds are processed to the original payment method within 5‑7 business days.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Privacy & GDPR -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="license-block" style="border-left-color: var(--accent);">
+                    <h3>🔒 Privacy &amp; Data Processing</h3>
+                    <p>
+                        We take your privacy seriously. ChromeHub does not collect or store any personal data unless you voluntarily provide it (e.g., via email or purchase).
+                        All processing of uploaded images happens <strong>client‑side</strong> — your files never leave your browser.
+                    </p>
+                    <p style="margin-top: 8px; color: var(--text-tertiary); font-size: 0.9rem;">
+                        For more details, refer to our full <a href="#" style="color: var(--accent); text-decoration: none;">Privacy Policy</a> (coming soon).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Updates -->
+            <div class="card">
+                <div class="license-block" style="border-left-color: var(--text-tertiary);">
+                    <h3>📅 Updates to This Agreement</h3>
+                    <p>
+                        We reserve the right to update these terms at any time. Changes will be posted on this page with an updated “Last updated” date.
+                        Your continued use of the assets after any changes constitutes acceptance of the new terms.
+                    </p>
+                    <p style="margin-top: 8px; color: var(--text-tertiary); font-size: 0.9rem;">
+                        <strong>Last updated:</strong> August 14, 2026
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div style="margin-top: 40px; padding: 24px; background: var(--bg-elevated); border-radius: var(--radius); text-align: center; border: 1px solid var(--border-subtle);">
+                <h3 style="color: #fff; font-size: 1.2rem;">Questions about licensing?</h3>
+                <p style="color: var(--text-secondary);">Reach out to us — we're happy to clarify any point.</p>
+                <a href="mailto:legal@chromehub.dev" class="btn btn-primary" style="margin-top: 12px;">📧 Contact Legal</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="font-size: 1.2rem;">Chrome<span>Hub</span></div>
+                    <p>The all‑in‑one toolkit for Chrome extension developers.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <span>Product</span>
+                        <a href="index.html#features">Features</a>
+                        <a href="index.html#pricing">Pricing</a>
+                        <a href="resizer.html">Resizer</a>
+                        <a href="extractor.html">Extractor</a>
+                    </div>
+                    <div>
+                        <span>Support</span>
+                        <a href="#faq">FAQ</a>
+                        <a href="license.html">Licensing</a>
+                        <a href="mailto:support@chromehub.dev">Contact</a>
+                    </div>
+                    <div>
+                        <span>Social</span>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 ChromeHub. All rights reserved.</span>
+                <span>Made with ☕ by an indie developer</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
